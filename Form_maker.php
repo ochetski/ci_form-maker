@@ -75,7 +75,7 @@ class Form_maker {
 	 */
 	public function output($form_fields)
 	{
-		$output = '';
+		$this->output = '';
 		foreach($form_fields as $key => $val)
 		{
 			if(method_exists($this, 'add_'.$val->type))
@@ -93,24 +93,29 @@ class Form_maker {
 	/**
 	 * Create form based on it's types
 	 *
-	 * @param	object	$form_fields
-	 * @return	string	HTML
-	 * @access	public
+	 * @param	string	$name
+	 * @param	object	$field
+	 * @return	void
+	 * @access	private
 	 * @author	William Ochetski Hellas
 	 */
 	private function add_multiple($name, $field)
 	{
-		$this->output .= '>>><<<'.PHP_EOL;
+		$this->output .= '<fieldset>'.PHP_EOL;
+		if(isset($field->title) && !empty($field->title)) {
+			$this->output .= '<legend>'.self::_lang($field->title).'</legend>'.PHP_EOL;
+		}
+		$form_fields = $field->fields;
 		foreach($form_fields as $key => $val)
 		{
 			if(method_exists($this, 'add_'.$val->type))
 			{
-				$this->{'add_'.$val->type}($key, $val);
+				$this->{'add_'.$val->type}($key, $val, TRUE);
 			} else {
 				log_message('debug', "Method 'add_{$val->type}' not found.");
 			}
 		}
-		$this->output .= '>>><<<'.PHP_EOL;
+		$this->output .= '</fieldset>'.PHP_EOL;
 		return $this->output;
 	}
 
@@ -121,11 +126,13 @@ class Form_maker {
 	 *
 	 * @param	string	$name
 	 * @param	object	$field
+	 * @param	boolean	$multiple
 	 * @return	void
 	 * @access	private
 	 * @author	William Ochetski Hellas
+	 * @todo	Finish multiple values
 	 */
-	private function add_text($name, $field)
+	private function add_text($name, $field, $multiple = FALSE)
 	{
 		$attrs = self::_general_attrs($field);
 		$this->output .=
@@ -137,17 +144,18 @@ class Form_maker {
 	}
 
 	// --------------------------------------------------------------------
-
 	/**
 	 * Creates input password element
 	 *
 	 * @param	string	$name
 	 * @param	object	$field
+	 * @param	boolean	$multiple
 	 * @return	void
 	 * @access	private
 	 * @author	Flávio da Silva Rodrigues
+	 * @todo	Finish multiple values
 	 */
-	private function add_password($name, $field)
+	private function add_password($name, $field, $multiple = FALSE)
 	{
 		$attrs = self::_general_attrs($field);
 		$this->output .=
@@ -209,11 +217,13 @@ class Form_maker {
 	 *
 	 * @param	string	$name
 	 * @param	object	$field
+	 * @param	boolean	$multiple
 	 * @return	void
 	 * @access	private
 	 * @author	William Ochetski Hellas
+	 * @todo	Finish multiple values
 	 */
-	private function add_select($name, $field)
+	private function add_select($name, $field, $multiple = FALSE)
 	{
 		$attrs = self::_general_attrs($field);
 		# join options
@@ -244,11 +254,13 @@ class Form_maker {
 	 *
 	 * @param	string	$name
 	 * @param	object	$field
+	 * @param	boolean	$multiple
 	 * @return	void
 	 * @access	private
 	 * @author	William Ochetski Hellas
+	 * @todo	Finish multiple values
 	 */
-	private function add_textarea($name, $field)
+	private function add_textarea($name, $field, $multiple = FALSE)
 	{
 		$attrs = self::_general_attrs($field);
 		# add to output
@@ -284,17 +296,18 @@ class Form_maker {
 
 	// --------------------------------------------------------------------
 
-
 	/**
 	 * Creates image with cropping field
 	 *
 	 * @param	string	$name
 	 * @param	object	$field
+	 * @param	boolean	$multiple
 	 * @return	void
 	 * @access	private
 	 * @author	William Ochetski Hellas
+	 * @todo	Finish multiple values
 	 */
-	private function add_crop($name, $field)
+	private function add_crop($name, $field, $multiple = FALSE)
 	{
 		$attrs = self::_general_attrs($field);
 		# add to output
@@ -386,4 +399,4 @@ class Form_maker {
 }
 
 /* End of file Form_maker.php */
-/* Location: ./app_folder/libraries/Form_maker.php */
+/* Location: ./application_cms/libraries/Form_maker.php */
