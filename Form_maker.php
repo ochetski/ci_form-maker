@@ -21,7 +21,7 @@ class Form_maker {
 
 	private
 		$CI,
-		$output = NULL;
+		$output = '';
 
 	// --------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ class Form_maker {
 	function __construct()
 	{
 		# debug
-		log_message('debug', "Form_maker Class Initialized");
+		log_message('debug', 'Form_maker Class Initialized');
 
 		# call Codeigniter instance
 		$this->CI =& get_instance();
@@ -75,13 +75,42 @@ class Form_maker {
 	 */
 	public function output($form_fields)
 	{
+		$output = '';
 		foreach($form_fields as $key => $val)
 		{
 			if(method_exists($this, 'add_'.$val->type))
 			{
 				$this->{'add_'.$val->type}($key, $val);
+			} else {
+				log_message('debug', "Method 'add_{$val->type}' not found.");
 			}
 		}
+		return $this->output;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Create form based on it's types
+	 *
+	 * @param	object	$form_fields
+	 * @return	string	HTML
+	 * @access	public
+	 * @author	William Ochetski Hellas
+	 */
+	private function add_multiple($name, $field)
+	{
+		$this->output .= '>>><<<'.PHP_EOL;
+		foreach($form_fields as $key => $val)
+		{
+			if(method_exists($this, 'add_'.$val->type))
+			{
+				$this->{'add_'.$val->type}($key, $val);
+			} else {
+				log_message('debug', "Method 'add_{$val->type}' not found.");
+			}
+		}
+		$this->output .= '>>><<<'.PHP_EOL;
 		return $this->output;
 	}
 
