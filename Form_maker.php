@@ -135,6 +135,9 @@ class Form_maker {
 	private function add_text($name, $field, $multiple = FALSE)
 	{
 		$attrs = self::_general_attrs($field);
+		if($multiple === TRUE) {
+			$name .= '[]';
+		}
 		$this->output .=
 			'<div class="text_input">'.PHP_EOL.
 			'<label>'.self::_lang($field->title).'</label>'.PHP_EOL.
@@ -154,11 +157,13 @@ class Form_maker {
 	 * @return	void
 	 * @access	private
 	 * @author	Flávio da Silva Rodrigues
-	 * @todo	Finish multiple values
 	 */
 	private function add_password($name, $field, $multiple = FALSE)
 	{
 		$attrs = self::_general_attrs($field);
+		if($multiple === TRUE) {
+			$name .= '[]';
+		}
 		$this->output .=
 			'<div class="text_input">'.PHP_EOL.
 			'<label>'.self::_lang($field->title).'</label>'.PHP_EOL.
@@ -259,11 +264,13 @@ class Form_maker {
 	 * @return	void
 	 * @access	private
 	 * @author	William Ochetski Hellas
-	 * @todo	Finish multiple values
 	 */
 	private function add_textarea($name, $field, $multiple = FALSE)
 	{
 		$attrs = self::_general_attrs($field);
+		if($multiple === TRUE) {
+			$name .= '[]';
+		}
 		# add to output
 		$this->output .=
 			'<div class="text_input">'.PHP_EOL.
@@ -306,11 +313,13 @@ class Form_maker {
 	 * @return	void
 	 * @access	private
 	 * @author	William Ochetski Hellas
-	 * @todo	Finish multiple values
 	 */
 	private function add_crop($name, $field, $multiple = FALSE)
 	{
 		$attrs = self::_general_attrs($field);
+		if($multiple === TRUE) {
+			$name .= '[]';
+		}
 		# add to output
 		$this->output .=
 			'<div class="file_input image_crop">'.PHP_EOL.
@@ -362,7 +371,7 @@ class Form_maker {
 		# list of attributes to check
 		$check = array('id', 'maxlength');
 		# set function output
-		$output = NULL;
+		$output = '';
 		foreach($check as $attribute)
 		{
 			if(isset($field->{$attribute}) && !empty($field->{$attribute}))
@@ -400,4 +409,4 @@ class Form_maker {
 }
 
 /* End of file Form_maker.php */
-/* Location: ./application_cms/libraries/Form_maker.php */
+/* Location: ./application/libraries/Form_maker.php */
